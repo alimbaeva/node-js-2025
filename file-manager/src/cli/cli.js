@@ -1,20 +1,19 @@
 import readline from 'readline';
-import { homedir } from 'os';
-import { argv } from 'process';
-import path from 'path';
+import { chdir } from 'process';
+import { getUsername, getHomeDirectory } from '../init/init.js';
+import { goUp } from '../commands/goUp.js';
+import { changeDirectory } from '../commands/changeDirectory.js';
+import { listDirectory } from '../commands/listDirectory.js';
+import { showCurrentDirectory } from '../commands/showCurrentDirectory.js';
+import { exitProgram } from '../init/exitHandler.js';
 
-let username = 'User';
-
-argv.forEach(arg => {
-  if (arg.startsWith('--username=')) {
-    username = arg.split('=')[1];
-  }
-});
+const username = getUsername();
 
 console.log(`Welcome to the File Manager, ${username}!`);
 
-let currentDir = process.cwd();
-console.log(`You are currently in ${currentDir}`);
+const homeDir = getHomeDirectory();
+chdir(homeDir);
+showCurrentDirectory();
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -24,24 +23,43 @@ const rl = readline.createInterface({
 
 rl.prompt();
 
-rl.on('line', (line) => {
+rl.on('line', async (line) => {
   const input = line.trim();
+  const [command, ...args] = input.split(' ');
 
-  switch (input) {
-    case '.exit':
-      console.log(`Thank you for using File Manager, ${username}, goodbye!`);
-      rl.close();
-      break;
-    default:
-      console.log(`Received: ${input}`);
-      rl.prompt();
-      break;
+  try {
+    switch (command) {
+      case '.exit':
+        exitProgram(username);
+        break;
+
+      case 'up':
+        goUp();
+        break;
+
+      case 'cd':
+        if (args.length === 0) {
+          console.log('Invalid input');
+        } else {
+          changeDirectory(args[0]);
+        }
+        break;
+
+      case 'ls':
+        listDirectory();
+        break;
+
+      default:
+        console.log('Invalid input');
+    }
+  } catch (err) {
+    console.log('Operation failed');
+  } finally {
+    showCurrentDirectory();
+    rl.prompt();
   }
-}).on('close', () => {
-  process.exit(0);
 });
 
 rl.on('SIGINT', () => {
-  console.log(`Thank you for using File Manager, ${username}, goodbye!`);
-  process.exit(0);
+  exitProgram(username);
 });
