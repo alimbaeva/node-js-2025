@@ -2,6 +2,7 @@ import readline from 'readline';
 import { chdir } from 'process';
 import { getUsername, getHomeDirectory } from '../init/init.js';
 import { goUp } from '../commands/goUp.js';
+import { cat } from '../commands/readCat.js';
 import { changeDirectory } from '../commands/changeDirectory.js';
 import { listDirectory } from '../commands/listDirectory.js';
 import { showCurrentDirectory } from '../commands/showCurrentDirectory.js';
@@ -47,6 +48,14 @@ rl.on('line', async (line) => {
 
       case 'ls':
         listDirectory();
+        break;
+
+      case 'cat':
+        if (args.length === 0) {
+            console.log('Invalid input');
+        } else {
+            cat(args[0]);
+        }
         break;
 
       default:
