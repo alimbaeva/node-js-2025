@@ -4,6 +4,7 @@ import { getUsername, getHomeDirectory } from '../init/init.js';
 import { goUp } from '../commands/goUp.js';
 import { add } from '../commands/add.js';
 import { mkdir } from '../commands/mkdir.js';
+import { copyFile } from '../commands/copyFile.js';
 import { rename } from '../commands/rename.js';
 import { cat } from '../commands/readCat.js';
 import { changeDirectory } from '../commands/changeDirectory.js';
@@ -83,6 +84,14 @@ rl.on('line', async (line) => {
           console.log('Invalid input');
         } else {
           rename(args[0], args[1]);
+        }
+        break;
+
+      case 'cp':
+        if (args.length < 2) {
+          console.log('Invalid input');
+        } else {
+          copyFile(args[0], args[1]);
         }
         break;
 
