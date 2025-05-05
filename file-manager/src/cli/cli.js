@@ -9,6 +9,7 @@ import { moveFile } from '../commands/moveFile.js';
 import { removeFile } from '../commands/removeFile.js';
 import { compressFile } from '../commands/compressFile.js';
 import { decompressFile } from '../commands/decompressFile.js';
+import { hash } from '../commands/hash.js';
 import { rename } from '../commands/rename.js';
 import { cat } from '../commands/readCat.js';
 import { changeDirectory } from '../commands/changeDirectory.js';
@@ -130,6 +131,14 @@ rl.on('line', async (line) => {
           console.log('Invalid input');
         } else {
           decompressFile(args[0], args[1]);
+        }
+        break;
+
+      case 'hash':
+        if (args.length === 0) {
+          console.log('Invalid input');
+        } else {
+          hash(args[0]);
         }
         break;
 
