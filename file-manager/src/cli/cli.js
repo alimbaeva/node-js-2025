@@ -16,6 +16,7 @@ import { changeDirectory } from '../commands/changeDirectory.js';
 import { listDirectory } from '../commands/listDirectory.js';
 import { showCurrentDirectory } from '../commands/showCurrentDirectory.js';
 import { exitProgram } from '../init/exitHandler.js';
+import os from 'os';
 
 const username = getUsername();
 
@@ -139,6 +140,31 @@ rl.on('line', async (line) => {
           console.log('Invalid input');
         } else {
           hash(args[0]);
+        }
+        break;
+
+      case 'os':
+        switch (args[0]) {
+          case '--EOL':
+            console.log('End-of-Line:', os.EOL);
+            break;
+          case '--cpus':
+            const cpus = os.cpus();
+            cpus.forEach((cpu, index) => {
+              console.log(`CPU ${index + 1}: Model - ${cpu.model}, Clock speed - ${cpu.speed / 1000} GHz`);
+            });
+            break;
+          case '--homedir':
+            console.log('Home Directory:', os.homedir());
+            break;
+          case '--username':
+            console.log('Username:', os.userInfo().username);
+            break;
+          case '--architecture':
+            console.log('Architecture:', os.arch());
+            break;
+          default:
+            console.log('Invalid input');
         }
         break;
 
