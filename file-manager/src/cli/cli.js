@@ -7,6 +7,8 @@ import { mkdir } from '../commands/mkdir.js';
 import { copyFile } from '../commands/copyFile.js';
 import { moveFile } from '../commands/moveFile.js';
 import { removeFile } from '../commands/removeFile.js';
+import { compressFile } from '../commands/compressFile.js';
+import { decompressFile } from '../commands/decompressFile.js';
 import { rename } from '../commands/rename.js';
 import { cat } from '../commands/readCat.js';
 import { changeDirectory } from '../commands/changeDirectory.js';
@@ -112,6 +114,22 @@ rl.on('line', async (line) => {
         } else {
           console.log('Calling removeFile with:', args[0]);
           removeFile(args[0]);
+        }
+        break;
+
+      case 'compress':
+        if (args.length < 2) {
+          console.log('Invalid input');
+        } else {
+          compressFile(args[0], args[1]);
+        }
+        break;
+
+      case 'decompress':
+        if (args.length < 2) {
+          console.log('Invalid input');
+        } else {
+          decompressFile(args[0], args[1]);
         }
         break;
 
