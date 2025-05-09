@@ -43,4 +43,15 @@ describe('simpleCalculator', () => {
     const result = simpleCalculator({ a, b, action });
     expect(result).toBeNull();
   });
+
+  test.each([
+    { a: '//', b: 2, action: Action.Divide },
+    { a: 1, b: undefined, action: Action.Add },
+    { a: 1, b: 'null', action: Action.Exponentiate },
+    { a: 1, b: '--', action: Action.Multiply },
+    { a: '+', b: 2, action: Action.Subtract },
+  ])('should return null for invalid arguments', ({ a, b, action }) => {
+    const result = simpleCalculator({ a, b, action });
+    expect(result).toBeNull();
+  });
 });
