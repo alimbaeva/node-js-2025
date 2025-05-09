@@ -33,4 +33,14 @@ describe('simpleCalculator', () => {
       expect(result).toBe(expected);
     },
   );
+
+  test.each([
+    { a: 1, b: 2, action: '?' },
+    { a: 1, b: 2, action: 'pp' },
+    { a: 1, b: 2, action: 'undefined' },
+    { a: 1, b: 2, action: '++' },
+  ])('should return null for invalid action', ({ a, b, action }) => {
+    const result = simpleCalculator({ a, b, action });
+    expect(result).toBeNull();
+  });
 });
