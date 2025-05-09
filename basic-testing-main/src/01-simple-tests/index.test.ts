@@ -11,10 +11,15 @@ describe('simpleCalculator tests', () => {
     expect(result).toBe(expected);
   });
 
-  test('should subtract two numbers', () => {
-    const input = { a: 5, b: 2, action: Action.Subtract };
+  test.each([
+    { input: { a: 5, b: 2, action: Action.Subtract }, expected: 3 },
+    { input: { a: 15, b: 2, action: Action.Subtract }, expected: 13 },
+    { input: { a: 10, b: 9, action: Action.Subtract }, expected: 1 },
+    { input: { a: 10, b: -9, action: Action.Subtract }, expected: 19 },
+    { input: { a: -10, b: -9, action: Action.Subtract }, expected: -1 },
+  ])('should subtract two numbers', ({ input, expected }) => {
     const result = simpleCalculator(input);
-    expect(result).toBe(3);
+    expect(result).toBe(expected);
   });
 
   test('should multiply two numbers', () => {
