@@ -14,22 +14,33 @@ describe('simpleCalculator tests', () => {
   });
 
   test('should multiply two numbers', () => {
-    // Write your test here
+    const input = { a: 4, b: 3, action: Action.Multiply };
+    const result = simpleCalculator(input);
+    expect(result).toBe(12);
   });
 
   test('should divide two numbers', () => {
-    // Write your test here
+    const input = { a: 10, b: 2, action: Action.Divide };
+    const result = simpleCalculator(input);
+    expect(result).toBe(5);
   });
 
   test('should exponentiate two numbers', () => {
-    // Write your test here
+    const input = { a: 2, b: 3, action: Action.Exponentiate };
+    const result = simpleCalculator(input);
+    expect(result).toBe(8);
   });
 
   test('should return null for invalid action', () => {
-    // Write your test here
+    const input = { a: 2, b: 3, action: '%' };
+    const result = simpleCalculator(input);
+    expect(result).toBeNull();
   });
 
   test('should return null for invalid arguments', () => {
-    // Write your test here
+    const input1 = { a: '2', b: 3, action: Action.Add };
+    const input2 = { a: 2, b: '3', action: Action.Add };
+    expect(simpleCalculator(input1)).toBeNull();
+    expect(simpleCalculator(input2)).toBeNull();
   });
 });
