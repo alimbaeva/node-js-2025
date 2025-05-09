@@ -21,7 +21,13 @@ describe('doStuffByTimeout', () => {
   });
 
   test('should call callback only after timeout', () => {
-    // Write your test here
+    const callback = jest.fn();
+    const timeout = 1000;
+
+    doStuffByTimeout(callback, timeout);
+    expect(callback).not.toHaveBeenCalled();
+    jest.advanceTimersByTime(timeout);
+    expect(callback).toHaveBeenCalled();
   });
 });
 
