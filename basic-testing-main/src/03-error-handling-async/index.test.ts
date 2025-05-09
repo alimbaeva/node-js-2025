@@ -1,4 +1,9 @@
-import { throwError, resolveValue } from './index';
+import {
+  throwError,
+  resolveValue,
+  throwCustomError,
+  MyAwesomeError,
+} from './index';
 // import { throwError, throwCustomError, resolveValue, MyAwesomeError, rejectCustomError } from './index';
 
 describe('resolveValue', () => {
@@ -28,7 +33,10 @@ describe('throwError', () => {
 
 describe('throwCustomError', () => {
   test('should throw custom error', () => {
-    // Write your test here
+    expect(() => throwCustomError()).toThrow(MyAwesomeError);
+    expect(() => throwCustomError()).toThrow(
+      'This is my awesome custom error!',
+    );
   });
 });
 
