@@ -4,8 +4,8 @@ import { throwError, resolveValue } from './index';
 describe('resolveValue', () => {
   test('should resolve provided value', async () => {
     const valueNumber = 42;
-    const valueString = 42;
-    const valueBoolean = 42;
+    const valueString = '42';
+    const valueBoolean = true;
     const result1 = await resolveValue(valueNumber);
     const result2 = await resolveValue(valueString);
     const result3 = await resolveValue(valueBoolean);
