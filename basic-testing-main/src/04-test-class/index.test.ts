@@ -1,4 +1,4 @@
-import { getBankAccount, InsufficientFundsError } from '.';
+import { getBankAccount, InsufficientFundsError, TransferFailedError } from '.';
 
 describe('BankAccount', () => {
   test('should create account with initial balance', () => {
@@ -26,7 +26,9 @@ describe('BankAccount', () => {
   });
 
   test('should throw error when transferring to the same account', () => {
-    // Write your test here
+    const account = getBankAccount(500);
+    expect(() => account.transfer(10, account)).toThrow(TransferFailedError);
+    expect(() => account.transfer(10, account)).toThrow('Transfer failed');
   });
 
   test('should deposit money', () => {
