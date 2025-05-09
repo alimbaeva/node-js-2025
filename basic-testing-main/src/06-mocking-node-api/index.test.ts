@@ -1,5 +1,7 @@
-import { doStuffByTimeout, doStuffByInterval } from '.';
-// import { readFileAsynchronously, doStuffByTimeout, doStuffByInterval } from '.';
+import { doStuffByTimeout, doStuffByInterval, readFileAsynchronously } from '.';
+import { join } from 'path';
+import { existsSync } from 'fs';
+import { readFile } from 'fs/promises';
 
 describe('doStuffByTimeout', () => {
   beforeAll(() => {
@@ -65,16 +67,46 @@ describe('doStuffByInterval', () => {
   });
 });
 
+jest.mock('fs', () => ({
+  existsSync: jest.fn(),
+  readFile: jest.fn(),
+}));
+
+jest.mock('path', () => ({
+  join: jest.fn(),
+}));
+
+jest.mock('fs/promises', () => ({
+  readFile: jest.fn(),
+}));
+
 describe('readFileAsynchronously', () => {
   test('should call join with pathToFile', async () => {
-    // Write your test here
+    const pathToFile = 'testFile.txt';
+    const expectedFullPath = 'some/full/path/testFile.txt';
+
+    (join as jest.Mock).mockReturnValue(expectedFullPath);
+
+    await readFileAsynchronously(pathToFile);
+    expect(join).toHaveBeenCalledWith(__dirname, pathToFile);
   });
 
   test('should return null if file does not exist', async () => {
-    // Write your test here
+    const pathToFile = 'testFile.txt';
+    (existsSync as jest.Mock).mockReturnValue(false);
+
+    const result = await readFileAsynchronously(pathToFile);
+    expect(result).toBeNull();
   });
 
   test('should return file content if file exists', async () => {
-    // Write your test here
+    const pathToFile = 'testFile.txt';
+    const fileContent = 'File content here';
+
+    (existsSync as jest.Mock).mockReturnValue(true);
+    (readFile as jest.Mock).mockResolvedValue(fileContent);
+
+    const result = await readFileAsynchronously(pathToFile);
+    expect(result).toBe(fileContent);
   });
 });
