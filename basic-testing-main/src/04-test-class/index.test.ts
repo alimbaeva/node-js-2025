@@ -15,7 +15,14 @@ describe('BankAccount', () => {
   });
 
   test('should throw error when transferring more than balance', () => {
-    // Write your test here
+    const account1 = getBankAccount(500);
+    const account2 = getBankAccount(200);
+    expect(() => account1.transfer(600, account2)).toThrow(
+      InsufficientFundsError,
+    );
+    expect(() => account1.transfer(600, account2)).toThrow(
+      'Insufficient funds: cannot withdraw more than 500',
+    );
   });
 
   test('should throw error when transferring to the same account', () => {
