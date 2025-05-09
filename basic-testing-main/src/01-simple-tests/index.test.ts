@@ -1,10 +1,14 @@
 import { simpleCalculator, Action } from './index';
 
 describe('simpleCalculator tests', () => {
-  test('should add two numbers', () => {
-    const input = { a: 2, b: 3, action: Action.Add };
+  test.each([
+    { input: { a: 2, b: 3, action: Action.Add }, expected: 5 },
+    { input: { a: -2, b: 3, action: Action.Add }, expected: 1 },
+    { input: { a: 0, b: 0, action: Action.Add }, expected: 0 },
+    { input: { a: 1.5, b: 2.5, action: Action.Add }, expected: 4 },
+  ])('should add two numbers', ({ input, expected }) => {
     const result = simpleCalculator(input);
-    expect(result).toBe(5);
+    expect(result).toBe(expected);
   });
 
   test('should subtract two numbers', () => {
