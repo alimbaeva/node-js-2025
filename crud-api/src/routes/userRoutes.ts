@@ -30,6 +30,8 @@ export const userRouter = (req: IncomingMessage, res: ServerResponse) => {
       break;
     default:
       res.statusCode = 404;
+      res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({ message: 'Endpoint not found' }));
+      break;
   }
 }
