@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'http';
-import { createUser, getAllUsers, getUserById } from '../controllers/userController';
+import { createUser, getAllUsers, getUserById, updateUser } from '../controllers/userController';
 
 export const userRouter = (req: IncomingMessage, res: ServerResponse) => {
   const urlParts = req.url?.split('/').filter(Boolean);
@@ -22,5 +22,11 @@ export const userRouter = (req: IncomingMessage, res: ServerResponse) => {
     case 'POST':
       if (!userId) createUser(req, res);
       break;
+    case 'PUT':
+      if (userId) updateUser(req, res, userId);
+      break;
+    default:
+      res.statusCode = 404;
+      res.end(JSON.stringify({ message: 'Endpoint not found' }));
   }
 }
