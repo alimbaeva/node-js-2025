@@ -10,7 +10,7 @@ if (cluster.isPrimary) {
     console.log(`Primary process ${process.pid} is running`);
 
     for (let i = 0; i < numCPUs; i++) {
-      cluster.fork({ PORT: (Number(PORT) + i).toString() })
+      cluster.fork()
     }
 
     cluster.on('exit', (worker, code, signal) => {
@@ -18,13 +18,13 @@ if (cluster.isPrimary) {
         cluster.fork();
     })
 } else {
-    const port = Number(process.env.PORT);
+    const PORT = Number(process.env.PORT) || 4000;
 
     const server = http.createServer((req, res) => {
         userRouter(req, res);
     });
 
-    server.listen(port, () => {
-      console.log(`Worker ${process.pid} started on port ${port}`);
+    server.listen(PORT, () => {
+      console.log(`Worker ${process.pid} started on port ${PORT}`);
     });
 }
