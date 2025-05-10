@@ -1,13 +1,15 @@
 import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
 import { IncomingMessage, ServerResponse } from 'http';
-import { users } from '../data/usersData';
+import { readUsers, writeUsers } from '../utils/usersStorage';
 
 export const getAllUsers = (res: ServerResponse) => {
+  const users = readUsers();
   res.writeHead(200, { 'Content-Type': 'application/json'});
   res.end(JSON.stringify(users));
 };
 
 export const getUserById = (id: string, res: ServerResponse) => {
+  const users = readUsers();
   if (!uuidValidate(id)) {
     res.writeHead(404);
     return res.end(JSON.stringify({ message: 'User not found'}));
@@ -17,6 +19,7 @@ export const getUserById = (id: string, res: ServerResponse) => {
 }
 
 export const createUser = (req: IncomingMessage, res: ServerResponse) => {
+  const users = readUsers();
   let body = '';
   req.on('data', (chunk) => {
     body += chunk;
@@ -44,6 +47,7 @@ export const createUser = (req: IncomingMessage, res: ServerResponse) => {
       }
 
       users.push(newUser);
+      writeUsers(users);
 
       res.statusCode = 201;
       res.end(JSON.stringify(newUser));
@@ -57,6 +61,7 @@ export const createUser = (req: IncomingMessage, res: ServerResponse) => {
 }
 
 export const updateUser = (req: IncomingMessage, res: ServerResponse, userId: string) => {
+  const users = readUsers();
   if (!uuidValidate(userId)) {
     res.statusCode = 400;
     res.end(JSON.stringify({
@@ -95,6 +100,7 @@ export const updateUser = (req: IncomingMessage, res: ServerResponse, userId: st
         hobbies
       }
       users[index] = updateUser;
+      writeUsers(users);
 
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
@@ -114,6 +120,7 @@ export const updateUser = (req: IncomingMessage, res: ServerResponse, userId: st
 }
 
 export const deleteUser = (res: ServerResponse, userId: string) => {
+  const users = readUsers();
   if (!uuidValidate(userId)) {
     res.statusCode = 400;
     res.setHeader('Content-Type', 'application/json');
@@ -132,7 +139,8 @@ export const deleteUser = (res: ServerResponse, userId: string) => {
     return;
   }
   users.splice(userIndex, 1);
-  
+  writeUsers(users);
+
   res.statusCode = 204;
   res.end();
 }

@@ -10,7 +10,7 @@ if (cluster.isPrimary) {
     console.log(`Primary process ${process.pid} is running`);
 
     for (let i = 0; i < numCPUs; i++) {
-      cluster.fork()
+      cluster.fork({ PORT: (Number(PORT) + i + 1).toString() })
     }
 
     cluster.on('exit', (worker, code, signal) => {
