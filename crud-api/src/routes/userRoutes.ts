@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'http';
-import { createUser, getAllUsers, getUserById, updateUser } from '../controllers/userController';
+import { createUser, deleteUser, getAllUsers, getUserById, updateUser } from '../controllers/userController';
 
 export const userRouter = (req: IncomingMessage, res: ServerResponse) => {
   const urlParts = req.url?.split('/').filter(Boolean);
@@ -24,6 +24,9 @@ export const userRouter = (req: IncomingMessage, res: ServerResponse) => {
       break;
     case 'PUT':
       if (userId) updateUser(req, res, userId);
+      break;
+    case 'DELETE':
+      if (userId) deleteUser(res, userId);
       break;
     default:
       res.statusCode = 404;

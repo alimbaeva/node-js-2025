@@ -112,3 +112,27 @@ export const updateUser = (req: IncomingMessage, res: ServerResponse, userId: st
     });
   })
 }
+
+export const deleteUser = (res: ServerResponse, userId: string) => {
+  if (!uuidValidate(userId)) {
+    res.statusCode = 400;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({
+      message: 'Invalid userid format'
+    }));
+    return;
+  }
+
+   const userIndex = users.findIndex((user) => user.id === userId);
+
+  if (userIndex === -1) {
+    res.statusCode = 404;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ message: 'User not found' }));
+    return;
+  }
+  users.splice(userIndex, 1);
+  
+  res.statusCode = 204;
+  res.end();
+}
