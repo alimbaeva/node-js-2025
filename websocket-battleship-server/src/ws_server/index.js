@@ -1,18 +1,27 @@
 import { WebSocketServer } from 'ws';
-import { httpServer } from "../http_server/index";
+import { handleMessage } from './messageHandler.js';
 
-const wss = new WebSocketServer({ server: httpServer });
+export const initWebSocketServer = (httpServer) => {
+  const wss = new WebSocketServer({ server: httpServer });
 
-wss.on('connection', (ws) => {
-  console.log('Client connected');
+  wss.on('connection', (ws) => {
+    console.log('Client connected');
+
+  console.log('Клиент подключен');
 
   ws.on('message', (message) => {
-    console.log('Received:', message.toString());
-
-    ws.send(`Echo: ${message}`);
+    try {
+      const parsedMessage = JSON.parse(message);
+      handleMessage(ws, parsedMessage);
+    } catch (error) {
+      console.error('Ошибка при разборе сообщения:', error);
+    }
   });
 
-//   ws.on('close', () => {
-//     console.log('Client disconnected');
-//   });
-});
+  ws.on('close', () => {
+    console.log('Клиент отключен');
+  });
+  });
+
+  return wss;
+};
